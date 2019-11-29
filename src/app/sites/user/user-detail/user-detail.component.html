@@ -1,0 +1,126 @@
+<p-toast [style]="{marginTop: '50px'}"></p-toast>
+<p-confirmDialog acceptLabel="Yes" rejectLabel="No"></p-confirmDialog>
+<h1 class="display-4">User details:</h1>
+
+<table class="table">
+  <tbody>
+  <tr>
+    <th>
+      Username:
+    </th>
+    <td>
+      {{ user.username }}
+    </td>
+  </tr>
+  <tr>
+    <th>
+      E-mail:
+    </th>
+    <td>
+      {{user.email}}
+    </td>
+    <td>
+      <div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)" class="edit_buttons">
+        <button pButton type="button" label="Edit" (click)="showEmailDialog()">
+        </button>
+        <p-dialog header="Edit e-mail" [(visible)]="emailEditDisplay" [modal]="true" [responsive]="true"
+                  [width]="800" [minWidth]="400" [minY]="70"
+                  [maximizable]="true" [baseZIndex]="10000">
+          <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-4">
+                <b>
+                  New e-mail address:
+                </b>
+              </div>
+              <div class="ui-grid-col-4">
+                <input name="emailAddressText"
+                       pInputText type="email"
+                       pTooltip="E-mail address, e. g. something@email.com"
+                       [(ngModel)]="userNewEmail"
+                       #emailAddressText="ngModel"
+                       placeholder="E-mail"
+                       required
+                       pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+                       minlength="5"/>
+              </div>
+              <div class="ui-grid-col-4">
+                <p-message
+                  severity="error"
+                  [text]="emailAddressText.errors['required'] ? 'E-mail most not be empty' :
+                      emailAddressText.errors['pattern'] ? 'Please give a valid e-mail address' :
+                      emailAddressText.errors['minlenght'] ? 'The provided e-mail address is too short' : ''"
+                  *ngIf="emailAddressText.invalid&&emailAddressText.dirty">
+                </p-message>
+              </div>
+            </div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-4">
+                <b>
+                  New e-mail confirm:
+                </b>
+              </div>
+              <div class="ui-grid-col-4">
+                <input name="emailAddressConfirmText"
+                       pInputText type="email"
+                       pTooltip="Confirm the e-mail provided above"
+                       [(ngModel)]="userNewEmailConfirm"
+                       #emailAddressConfirmText="ngModel"
+                       placeholder="E-mail again"
+                       required
+                       pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+                       minlength="5"
+                       (invalid)="emailAddressConfirmText != emailAddressText"/>
+              </div>
+              <div class="ui-grid-col-4">
+                <p-message
+                  severity="error"
+                  text="The two e-mail addresses do not match"
+                  *ngIf="userNewEmailConfirm!=''&&((emailAddressConfirmText.invalid&&emailAddressConfirmText.dirty)||(userNewEmail !== userNewEmailConfirm))">
+                </p-message>
+              </div>
+            </div>
+          </div>
+          <p-footer>
+            <button
+              type="button" pButton
+              icon="fa fa-check"
+              (click)="changeEmail(); emailEditDisplay = false;"
+              label="Save"
+              [disabled]="(userNewEmail === '' || userNewEmailConfirm === '') || (userNewEmail !== userNewEmailConfirm)"></button>
+            <button
+              type="button" pButton
+              icon="fa fa-times"
+              (click)="emailEditDisplay = false"
+              label="Cancel"></button>
+          </p-footer>
+        </p-dialog>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Favourite genres:
+    </th>
+    <td>
+      <div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)">
+        <p-pickList [source]="genreList" [target]="userGenres" sourceHeader="All genres" targetHeader="Your genres"
+                    [responsive]="true" filterBy="name"
+                    sourceFilterPlaceholder="Search by genre name" targetFilterPlaceholder="Search by genre name"
+                    [showSourceControls]="false" [showTargetControls]="false"
+                    (onMoveToTarget)="updateGenres()" (onMoveToSource)="updateGenres()">
+          <ng-template let-genre pTemplate="item">
+            <div class="ui-helper-clearfix">
+              <div style="font-size:15px;float:center;margin:5px 5px 6px 6px">{{genre.name}}</div>
+            </div>
+          </ng-template>
+        </p-pickList>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<div *ngIf="(authService.isLoggedIn) && (authService.loggedInUser.id === user.id)" class="delete_button">
+  <button pButton type="button" (click)="deleteUserConfirm();" label="Delete registration">
+  </button>
+</div>

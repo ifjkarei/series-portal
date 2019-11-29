@@ -1,0 +1,136 @@
+<p-toast [style]="{marginTop: '50px'}"></p-toast>
+<h1>Add new series</h1>
+<form (submit)="submit(f); f.reset()" #f="ngForm">
+  <p-panel [showHeader]="false">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Title*:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <input name="titleText"
+                 pInputText type="text"
+                 pTooltip="Title of the series"
+                 [(ngModel)]="series.title"
+                 #titleText="ngModel"
+                 placeholder="Title"
+                 required/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="titleText.errors['required'] ? 'Title must not be empty' : ''"
+            *ngIf="titleText.invalid&&titleText.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Description*:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <textarea name="descText"
+                    pInputTextarea
+                    pTooltip="A short description of the series"
+                    [(ngModel)]="series.desc"
+                    #descText="ngModel"
+                    placeholder="Description"
+                    required></textarea>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="descText.errors['required'] ? 'Description most not be empty' :''"
+            *ngIf="descText.invalid&&descText.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Long description*:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <textarea name="longDescText"
+                    pInputTextarea
+                    pTooltip="A longer more detailed description of the series"
+                    [(ngModel)]="series.longDesc"
+                    #longDescText="ngModel"
+                    placeholder="Long description"
+                    required></textarea>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="longDescText.errors['required'] ? 'Long description most not be empty' :''"
+            *ngIf="longDescText.invalid&&longDescText.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Release year*:
+          </b>
+        </div>
+        <div class="ui-grid-col-2">
+          <p-spinner name="releaseNumber"
+                     pTooltip="The year in which the series was released"
+                     [(ngModel)]="series.release"
+                     #titleText="ngModel"
+                     [min]="1950" [max]="2100"
+                     placeHolder="2010"></p-spinner>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Choose series genres*:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <p-pickList [source]="genreList" [target]="seriesGenres" sourceHeader="All genres"
+                      targetHeader="Series genres" [responsive]="true" filterBy="name"
+                      sourceFilterPlaceholder="Search by genre name" targetFilterPlaceholder="Search by genre name"
+                      [showSourceControls]="false" [showTargetControls]="false">
+            <ng-template let-genre pTemplate="item">
+              <div class="ui-helper-clearfix">
+                <div style="font-size:15px;float:center;margin:5px 5px 6px 6px">{{genre.name}}</div>
+              </div>
+            </ng-template>
+          </p-pickList>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Upload cover*:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <p-fileUpload name="imgData[]" customUpload="true" (uploadHandler)="uploadImage($event)"
+                        [auto]="true" mode="basic"
+                        accept="image/*" maxFileSize="10000000" required>
+          </p-fileUpload>
+        </div>
+      </div>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2"></div>
+        <div class="ui-grid-col-6">
+          <button
+            class="ui-button-raised ui-button-success"
+            pButton type="submit"
+            label="Add series"
+            [disabled]="f.invalid || !imageUploading || !(seriesGenres.length > 0)">
+          </button>
+        </div>
+      </div>
+    </div>
+  </p-panel>
+</form>

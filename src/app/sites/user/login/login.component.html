@@ -1,0 +1,54 @@
+<h1 class="first">Login</h1>
+<p-messages [(value)]="msgs"></p-messages>
+<form (submit)="submit(f)" #f="ngForm">
+  <p-panel [showHeader]="false">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <input
+            name="usernameText"
+            pInputText type="text"
+            [(ngModel)]="username"
+            #usernameText="ngModel"
+            placeholder="Username"
+            required/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="usernameText.errors['required'] ? 'Please provide a username!' : ''"
+            *ngIf="usernameText.invalid&&usernameText.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <input
+            name="passwordText"
+            pInputText type="password"
+            [(ngModel)]="password"
+            #passwordText="ngModel"
+            placeholder="Password"
+            required/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="passwordText.errors['required'] ? 'Please provide a password!' : ''"
+            *ngIf="passwordText.invalid&&passwordText.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-4">
+          <button
+            class="ui-button-raised ui-button-success"
+            pButton type="submit"
+            label="Login"
+            [disabled]="f.invalid">
+          </button>
+        </div>
+      </div>
+    </div>
+  </p-panel>
+</form>

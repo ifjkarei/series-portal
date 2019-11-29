@@ -1,0 +1,164 @@
+<h1>Registration</h1>
+<p-messages [(value)]="msgs"></p-messages>
+<form (submit)="submit(f)" #f="ngForm">
+  <p-panel [showHeader]="false">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Username *:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <input name="usernameText"
+                 pInputText type="text"
+                 pTooltip="Username must be between 4 and 30 characters and can only contain numbers, letters and specific symbols(@, #, $, !, _)"
+                 [(ngModel)]="user.username"
+                 #usernameText="ngModel"
+                 placeholder="Username"
+                 required
+                 pattern="[0-9A-Za-z @#$!_]*"
+                 minlength="4"
+                 maxlength="30"/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="usernameText.errors['required'] ? 'Username must not be empty' :
+                    usernameText.errors['pattern'] ? 'Username contains illegal characters' :
+                    usernameText.errors['minlength'] ? 'Username is less than 4 characters long' :
+                    usernameText.errors['maxlength'] ? 'Username is more than 30 characters long' : ''"
+            *ngIf="usernameText.invalid&&usernameText.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            E-mail *:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <input name="emailAddressText"
+                 pInputText type="email"
+                 pTooltip="E-mail address, e. g. something@email.com"
+                 [(ngModel)]="user.email"
+                 #emailAddressText="ngModel"
+                 placeholder="E-mail"
+                 required
+                 pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+                 minlength="5"/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="emailAddressText.errors['required'] ? 'E-mail most not be empty' :
+                      emailAddressText.errors['pattern'] ? 'Please give a valid e-mail address' :
+                      emailAddressText.errors['minlenght'] ? 'The provided e-mail address is too short' : ''"
+            *ngIf="emailAddressText.invalid&&emailAddressText.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Confirm e-mail *:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <input name="emailAddressConfirmText"
+                 pInputText type="email"
+                 pTooltip="Confirm the e-mail provided above"
+                 [(ngModel)]="emailAddressConfirm"
+                 #emailAddressConfirmText="ngModel"
+                 placeholder="E-mail again"
+                 required
+                 pattern="[a-z0-9._]+@[a-z0-9._]+\.[a-z]{2,3}"
+                 minlength="5"
+                 (invalid)="emailAddressConfirm != user.email"/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            text="The two e-mail addresses do not match"
+            *ngIf="user.email!=''&&((emailAddressConfirmText.invalid&&emailAddressConfirmText.dirty)||emailAddressConfirm!=user.email)">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Password *:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <input name="passwordText"
+                 pPassword type="password"
+                 promptLabel="Password strength"
+                 weakLabel="Weak"
+                 mediumLabel="Medium"
+                 strongLabel="Strong"
+                 pTooltip="Give a password between 8 and 30 characters"
+                 [(ngModel)]="password"
+                 #passwordText="ngModel"
+                 placeholder="Password"
+                 required
+                 pattern="[0-9A-Za-z@$_!.]*"
+                 minlength="8"
+                 maxlength="30"/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            [text]="passwordText.errors['required'] ? 'Password must be provided' :
+              passwordText.errors['minlength'] ? 'The password is less than 8 characters long' :
+              passwordText.errors['maxlenght'] ? 'The password is more than 30 characters long' : ''"
+            *ngIf="passwordText.invalid&&passwordText.dirty">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <b>
+            Confirm password *:
+          </b>
+        </div>
+        <div class="ui-grid-col-6">
+          <input name="passwordConfirmText"
+                 pPassword type="password"
+                 promptLabel="Password strength"
+                 weakLabel="Weak"
+                 mediumLabel="Medium"
+                 strongLabel="Strong"
+                 pTooltip="Confirm the password provided above"
+                 [(ngModel)]="passwordConfirm"
+                 #passwordConfirmText="ngModel"
+                 placeholder="Password again"
+                 required
+                 pattern="[0-9A-Za-z@$_!.]*"
+                 minlength="8"
+                 maxlength="30"
+                 (invalid)="password != passwordConfirm"/>
+        </div>
+        <div class="ui-grid-col-4">
+          <p-message
+            severity="error"
+            text="The two passwords do not match"
+            *ngIf="password!=''&&((passwordConfirmText.invalid&&passwordConfirmText.dirty)||passwordConfirm!=password)">
+          </p-message>
+        </div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2"></div>
+        <div class="ui-grid-col-6">
+          <button
+            class="ui-button-raised ui-button-success"
+            pButton type="submit"
+            label="Register"
+            [disabled]="f.invalid">
+          </button>
+        </div>
+      </div>
+    </div>
+  </p-panel>
+</form>
