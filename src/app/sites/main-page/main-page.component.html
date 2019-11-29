@@ -1,0 +1,27 @@
+<h1>Welcome to Series Portal</h1>
+<p-carousel [value]="series" styleClass="custom-carousel" [numVisible]="4" [numScroll]="1" [circular]="true"
+            [autoplayInterval]="3000" [responsiveOptions]="responsiveOptions">
+  <p-header>
+    <h3>The Site where you can keep track of your series!</h3>
+  </p-header>
+  <ng-template let-series pTemplate="item">
+    <div class="series-details">
+      <div class="p-grid p-nogutter">
+        <div class="p-col-12">
+          <img class="carousel" [alt]="series.title + ' cover image'" style="height:200px" src="{{series.cover}}">
+        </div>
+        <div class="p-col-12" class="series-details" style="text-align: center">
+          <div class="series-title">{{series.title}}</div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>
+<p>Nowadays innumerable series exists all around the world, so no wonder one struggles to keep them organized and
+  sorted.
+  This application is the answer for all your trouble... well concerning series at the very least.
+  Here you can organize your series by three categories: Watched, Watching, Will Watch, to help you keep track of
+  everything,
+  and to make sure you never forget to watch a series you really wanted to, but forgot. So what are you waiting for,
+  register for free and enjoy
+  the features this site has to offer!</p>

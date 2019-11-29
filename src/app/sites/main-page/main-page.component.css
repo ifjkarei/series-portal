@@ -1,0 +1,12 @@
+.carousel {
+  margin-left: 26%;
+}
+
+/deep/ body .ui-widget-overlay {
+    background-color: transparent;
+}
+
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}

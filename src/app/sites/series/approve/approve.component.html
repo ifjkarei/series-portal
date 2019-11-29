@@ -1,0 +1,31 @@
+<p-toast [style]="{marginTop: '50px'}"></p-toast>
+<h2>Approve Series</h2>
+<p-dataView #dv [value]="series" [paginator]="true" [rows]="8" paginatorPosition="both">
+  <p-header>
+
+  </p-header>
+  <ng-template let-series pTemplate="listItem">
+    <div class="ui-g-12">
+      <div class="series-details">
+        <img class="ui-g-2" [alt]="series.title + ' cover image'" style="min-height:200px; min-width:150px"
+             [attr.src]="series.cover">
+        <div class="ui-g">
+          <div class="ui-g-12"><b>Title:</b> {{series.title}}</div>
+          <div class="ui-g-12"><b>Genre:</b> {{series.genres[0].name}} <span *ngIf="series.genres[1]">| {{series.genres[1].name}}</span><span
+            *ngIf="series.genres[2]">| {{series.genres[2].name}}</span>
+            <span *ngIf="series.genres[3]">| {{series.genres[3].name}}</span><span *ngIf="series.genres[4]">| {{series.genres[4].name}}</span>
+          </div>
+          <div class="ui-g-12"><b>Release year:</b> {{series.release}}</div>
+          <div class="ui-g-12"><b>Short Description:</b> {{series.desc}}</div>
+          <div class="ui-g-12"><b>Long Description:</b> {{series.longDesc}}</div>
+          <div class="ui-g-12">
+            <button *ngIf="authService.isAdmin" pButton type="button" (click)="approveSeries($event, series);"
+                    label="Approve"></button>
+            <button *ngIf="authService.isAdmin" pButton type="button" (click)="deleteSeries($event, series);"
+                    label="Reject" style="margin-left: 5px" class="ui-button-secondary"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-dataView>
