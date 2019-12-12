@@ -1,0 +1,21 @@
+.cover {
+ object-fit: scale-down;
+}
+
+img { height: 250px; background-color: white;}
+
+img[class] {
+  width: 100%;
+}
+
+textarea {
+  resize: both;
+  width: 410px;
+  height: 200px;
+  margin-left: 20px;
+}
+
+body .ui-dialog {
+  width: 550px !important;
+  minWidth: 200px !important;
+}

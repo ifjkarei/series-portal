@@ -24,7 +24,7 @@
         <button pButton type="button" label="Edit" (click)="showEmailDialog()">
         </button>
         <p-dialog header="Edit e-mail" [(visible)]="emailEditDisplay" [modal]="true" [responsive]="true"
-                  [width]="800" [minWidth]="400" [minY]="70"
+                  [style]="{'width':'800px', 'minWidth':'400px'}" [minY]="70"
                   [maximizable]="true" [baseZIndex]="10000">
           <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
             <div class="ui-grid-row">

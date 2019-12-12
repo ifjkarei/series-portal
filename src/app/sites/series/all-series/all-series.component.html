@@ -7,11 +7,12 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-5">
           <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort by"
-                      (onChange)="onSortChange($event)" [style]="{'min-width':'150px'}"></p-dropdown>
-          <p-dropdown style="margin-left:5px" [(ngModel)]="selected" [options]="filterOptions"
+                      (onChange)="onSortChange($event)"
+                      [style]="{'min-width':'150px', 'margin-right':'5px'}"></p-dropdown>
+          <span><p-dropdown [(ngModel)]="selected" [options]="filterOptions"
                       placeholder="Filter by Genres" (onChange)="onFilterChange($event)"
                       [style]="{'min-width':'150px'}"></p-dropdown>
-          <button pButton type="button" style="margin-left:5px" (click)="onReset();" label="Reset"></button>
+            <button pButton type="button" (click)="onReset();" label="Reset"></button></span>
         </div>
         <div class="ui-g-6 ui-md-3" style="text-align:center">
           <div style="position:relative">
@@ -19,8 +20,6 @@
           </div>
         </div>
         <div class="ui-g-6 ui-md-4" style="text-align:right">
-          <button pButton type="button" style="height: 32px;margin-right:5px" icon="pi pi-info-circle"
-                  (click)="showDetails()" label="Detailed view"></button>
           <p-dataViewLayoutOptions>
           </p-dataViewLayoutOptions>
         </div>
@@ -30,21 +29,20 @@
   <ng-template let-series pTemplate="listItem">
     <div class="ui-g-12">
       <div class="series-details">
-        <img class="ui-g-2" [alt]="series.title + ' cover image'" style="min-height:200px; min-width:150px"
-             [attr.src]="series.cover">
+        <a href="series/{{series.id}}"><img class="ui-g-2" [alt]="series.title + ' cover image'"
+                                            style="min-height:200px; min-width:150px"
+                                            [attr.src]="series.cover"></a>
         <div class="ui-g">
           <div class="ui-g-12"><b>Title:</b> {{series.title}}</div>
-          <div class="ui-g-12"><b>Genre:</b> {{series.genres[0].name}} | {{series.genres[1].name}} <span
-            *ngIf="series.genres[2]">| {{series.genres[2].name}}</span></div>
-          <div class="ui-g-12" *ngIf="!display"><b>Description:</b> {{series.desc}}</div>
-          <div *ngIf="display">
-            <div class="ui-g-12"><b>Release year:</b> {{series.release}}</div>
-            <div class="ui-g-12"><b>Description:</b> {{series.longDesc}}</div>
-          </div>
-          <div class="ui-g-12">
-            <p-dropdown *ngIf="authService.isLoggedIn" class="ui-g-8" [options]="listOptions"
+          <div class="ui-g-12" *ngIf="series.genres"><b>Genre:</b> |
+            <span *ngFor="let genre of series.genres">{{genre.name}} | </span></div>
+          <div class="ui-g-12"><b>Description:</b> {{series.desc}}</div>
+          <div class="ui-grid-row">
+            <p-dropdown *ngIf="authService.isLoggedIn" [options]="listOptions"
                         placeholder="Add to My Series" (onChange)="onListChange($event, series)"
-                        [style]="{'min-width':'140px'}"></p-dropdown>
+                        [style]="{'min-width':'140px', 'margin-top':'-4px', 'margin-left':'7px'}"></p-dropdown>
+            <button pButton type="button" style="margin-left:10px" icon="pi pi-info-circle"
+                    routerLink="/series/{{series.id}}" label="Details"></button>
           </div>
         </div>
       </div>
@@ -53,7 +51,8 @@
   <ng-template let-series pTemplate="gridItem">
     <div style="padding:.5em; text-align:center" class="ui-g-12 ui-md-3">
       <p-panel [header]="series.title">
-        <img [alt]="series.title + ' cover image'" style="height:200px; float: none" src="{{series.cover}}">
+        <a href="series/{{series.id}}"><img [alt]="series.title + ' cover image'" style="height:200px; float: none"
+                                            src="{{series.cover}}"></a>
         <div class="series-detail" class="ui-g-12" style="text-align:center">{{series.release}}</div>
         <hr class="ui-widget-content" style="margin-top:30px">
         <p-dropdown *ngIf="authService.isLoggedIn" [options]="listOptions" placeholder="Add to My Series"

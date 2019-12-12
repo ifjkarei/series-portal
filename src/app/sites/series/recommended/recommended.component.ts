@@ -84,21 +84,21 @@ export class RecommendedComponent implements OnInit {
       switch(value) {
         case "tobewatched": {
           this.messageService.add({severity:'info', summary: 'Adding series to Will Watch list', detail:''});
-          await this.userService.updateToBeWatched(this.userId, series);
+          await this.userService.updateToBeWatched(series);
           this.messageService.add({severity:'success', summary: 'Successfully added series to Will Watch list', detail:''});
           this.getRecommendedSeries();
           break;
         }
         case "nowwatching": {
           this.messageService.add({severity:'info', summary: 'Adding series to Now Watching list', detail:''});
-          await this.userService.updateNowWatching(this.userId, series);
+          await this.userService.updateNowWatching(series);
           this.messageService.add({severity:'success', summary: 'Successfully added series to Now Watching list', detail:''});
           this.getRecommendedSeries();
           break;
         }
         case "watched": {
           this.messageService.add({severity:'info', summary: 'Adding series to Watched list', detail:''});
-          await this.userService.updateWatched(this.userId, series);
+          await this.userService.updateWatched(series);
           this.messageService.add({severity:'success', summary: 'Successfully added series to Watched list', detail:''});
           this.getRecommendedSeries();
           break;

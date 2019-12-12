@@ -56,6 +56,7 @@ import { NowWatchingComponent } from './sites/series/now-watching/now-watching.c
 import { WatchedComponent } from './sites/series/watched/watched.component';
 import { RecommendedComponent } from './sites/series/recommended/recommended.component';
 import { ApproveComponent } from './sites/series/approve/approve.component';
+import { SeriesDetailComponent } from './sites/series/series-detail/series-detail.component';
 
 
 registerLocaleData(localeHu);
@@ -74,7 +75,8 @@ registerLocaleData(localeHu);
     NowWatchingComponent,
     WatchedComponent,
     RecommendedComponent,
-    ApproveComponent
+    ApproveComponent,
+    SeriesDetailComponent
   ],
   imports: [
     BrowserModule,

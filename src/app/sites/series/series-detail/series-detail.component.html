@@ -1,0 +1,243 @@
+<p-confirmDialog acceptLabel="Yes" rejectLabel="No"></p-confirmDialog>
+<p-toast [style]="{marginTop: '50px'}"></p-toast>
+<h2>Series Details</h2>
+<div class="ui-g-12">
+  <div class="ui-g-2">
+    <div class="ui-g">
+      <img [alt]="series.title + ' cover image'" class="cover" [attr.src]="series.cover">
+      <p-fileUpload *ngIf="authService.isAdmin" name="imgData[]" customUpload="true"
+                    (uploadHandler)="uploadImage($event)"
+                    [auto]="true" mode="basic" chooseLabel="Change cover"
+                    accept="image/*" maxFileSize="10000000" required>
+      </p-fileUpload>
+    </div>
+
+  </div>
+  <div class="ui-g-10">
+    <div class="ui-g">
+      <div class="ui-g-12"><b>Title:</b> {{series.title}}</div>
+      <div class="ui-g-12">
+        <button *ngIf="authService.isAdmin" pButton type="button" icon="pi pi-pencil" (click)="showTitleDialog()"
+                label="Modify title"></button>
+      </div>
+      <div class="ui-g-12" *ngIf="series.genres"><b>Genre:</b> |
+        <span *ngFor="let genre of series.genres">{{genre.name}} | </span></div>
+      <div class="ui-g-12">
+        <button *ngIf="authService.isAdmin" pButton type="button" icon="pi pi-pencil" (click)="showGenreDialog()"
+                label="Modify genres"></button>
+      </div>
+      <div class="ui-g-12"><b>Release year:</b> {{series.release}}</div>
+      <div class="ui-g-12">
+        <button *ngIf="authService.isAdmin" pButton type="button" icon="pi pi-pencil" (click)="showReleaseDialog()"
+                label="Modify release year"></button>
+      </div>
+      <div class="ui-g-12" *ngIf="authService.isAdmin"><b>Description:</b> {{series.desc}}</div>
+      <div class="ui-g-12">
+        <button *ngIf="authService.isAdmin" pButton type="button" icon="pi pi-pencil" (click)="showDescDialog()"
+                label="Modify description"></button>
+      </div>
+      <div class="ui-g-12"><b>Description:</b> {{series.longDesc}}</div>
+      <div class="ui-g-12">
+        <button *ngIf="authService.isAdmin" pButton type="button" icon="pi pi-pencil" (click)="showLongDescDialog()"
+                label="Modify long description"></button>
+      </div>
+      <div class="ui-g-12">
+        <button *ngIf="authService.isAdmin" pButton type="button" icon="pi pi-times" style="margin-top: 10px"
+                (click)="deleteSeriesConfirm()" label="Delete Series"></button>
+      </div>
+      <div class="ui-g-2" style="margin-top: 20px">
+        <button pButton (click)="goBack()" icon="fa fa-chevron-left" label="Go back"></button>
+      </div>
+      <div class="ui-g-10">
+        <p-dropdown *ngIf="authService.isLoggedIn" [options]="listOptions"
+                    placeholder="Add to My Series" (onChange)="onListChange($event, series)"
+                    [style]="{'min-width':'140px', 'margin-top':'20px'}"></p-dropdown>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p-dialog header="Edit title" [(visible)]="titleEditDisplay" [modal]="true" [responsive]="true"
+          [style]="{'width':'550px', 'minWidth':'200px'}" [minY]="70" [closable]="false"
+          [maximizable]="true" [baseZIndex]="10000">
+  <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <b>
+          New title:
+        </b>
+      </div>
+      <div class="ui-grid-col-6">
+        <input name="titleText"
+               pInputText type="text"
+               pTooltip="Series title"
+               [(ngModel)]="series.title"
+               #titleText="ngModel"
+               required/>
+      </div>
+      <div class="ui-grid-col-4">
+        <p-message
+          severity="error"
+          [text]="titleText.errors['required'] ? 'New title most not be empty' : ''"
+          *ngIf="titleText.invalid&&titleText.dirty">
+        </p-message>
+      </div>
+    </div>
+  </div>
+
+  <p-footer>
+    <button
+      type="button" pButton
+      icon="fa fa-check"
+      (click)="updateSeries(); titleEditDisplay = false;"
+      label="Save"
+      [disabled]="series.title === ''"></button>
+    <button
+      type="button" pButton
+      icon="fa fa-times"
+      (click)="titleEditDisplay = false; loadSeries()"
+      label="Cancel"></button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Edit genres" [(visible)]="genreEditDisplay" [modal]="true" [responsive]="true"
+          [style]="{'width':'550px', 'minWidth':'200px'}" [minY]="70" [closable]="false"
+          [maximizable]="true" [baseZIndex]="10000">
+  <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+    <div class="ui-grid-row">
+      <p-pickList [source]="genreList" [target]="series.genres" sourceHeader="All genres"
+                  targetHeader="Series genres" [responsive]="true" filterBy="name"
+                  sourceFilterPlaceholder="Search by genre name" targetFilterPlaceholder="Search by genre name"
+                  [showSourceControls]="false" [showTargetControls]="false">
+        <ng-template let-genre pTemplate="item">
+          <div class="ui-helper-clearfix">
+            <div style="font-size:15px;float:center;margin:5px 5px 6px 6px">{{genre.name}}</div>
+          </div>
+        </ng-template>
+      </p-pickList>
+    </div>
+  </div>
+
+  <p-footer>
+    <button
+      type="button" pButton
+      icon="fa fa-check"
+      (click)="updateSeries(); genreEditDisplay = false;"
+      label="Save"
+      [disabled]="series.genres?.length < 1"></button>
+    <button
+      type="button" pButton
+      icon="fa fa-times"
+      (click)="genreEditDisplay = false; loadSeries()"
+      label="Cancel"></button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Edit release year" [(visible)]="releaseEditDisplay" [modal]="true" [responsive]="true"
+          [style]="{'width':'550px', 'minWidth':'200px'}" [minY]="70" [closable]="false"
+          [maximizable]="true" [baseZIndex]="10000">
+  <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-3">
+        <b>
+          New release year:
+        </b>
+      </div>
+      <div class="ui-grid-col-9">
+        <p-spinner name="releaseNumber"
+                   pTooltip="The year in which the series was released"
+                   [(ngModel)]="series.release"
+                   #titleText="ngModel"
+                   [min]="1950" [max]="2100"></p-spinner>
+      </div>
+    </div>
+  </div>
+
+  <p-footer>
+    <button
+      type="button" pButton
+      icon="fa fa-check"
+      (click)="updateSeries(); releaseEditDisplay = false;"
+      label="Save"></button>
+    <button
+      type="button" pButton
+      icon="fa fa-times"
+      (click)="releaseEditDisplay = false; loadSeries()"
+      label="Cancel"></button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Edit short description" [(visible)]="descEditDisplay" [modal]="true" [responsive]="true"
+          [style]="{'width':'550px', 'minWidth':'200px'}" [minY]="70" [closable]="false"
+          [maximizable]="true" [baseZIndex]="10000">
+  <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <b>
+          Description*:
+        </b>
+      </div>
+      <div class="ui-grid-col-10">
+        <textarea name="descText"
+                  pInputTextarea
+                  pTooltip="A short description of the series"
+                  [(ngModel)]="series.desc"
+                  #descText="ngModel"
+                  placeholder="Description"
+                  required></textarea>
+      </div>
+    </div>
+  </div>
+
+  <p-footer>
+    <button
+      type="button" pButton
+      icon="fa fa-check"
+      (click)="updateSeries(); descEditDisplay = false;"
+      label="Save"
+      [disabled]="series.desc === ''"></button>
+    <button
+      type="button" pButton
+      icon="fa fa-times"
+      (click)="descEditDisplay = false; loadSeries()"
+      label="Cancel"></button>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Edit long description" [(visible)]="longDescEditDisplay" [modal]="true" [responsive]="true"
+          [style]="{'width':'550px', 'minWidth':'200px'}" [minY]="70" [closable]="false"
+          [maximizable]="true" [baseZIndex]="10000">
+  <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-2">
+        <b>
+          Long description*:
+        </b>
+      </div>
+      <div class="ui-grid-col-10">
+          <textarea name="longDescText"
+                    pInputTextarea
+                    pTooltip="A longer more detailed description of the series"
+                    [(ngModel)]="series.longDesc"
+                    #longDescText="ngModel"
+                    placeholder="Long description"
+                    required></textarea>
+      </div>
+    </div>
+  </div>
+
+  <p-footer>
+    <button
+      type="button" pButton
+      icon="fa fa-check"
+      (click)="updateSeries(); longDescEditDisplay = false;"
+      label="Save"
+      [disabled]="series.longDesc === ''"></button>
+    <button
+      type="button" pButton
+      icon="fa fa-times"
+      (click)="longDescEditDisplay = false; loadSeries()"
+      label="Cancel"></button>
+  </p-footer>
+</p-dialog>

@@ -76,20 +76,31 @@ series: Series[];
     }
   }
 
+  async removeSeries(event: EventTarget, series: Series) {
+    try {
+          this.messageService.add({severity:'info', summary: 'Removing series from My Series', detail:''});
+          await this.userService.removeFromWatched(series);
+          this.messageService.add({severity:'success', summary: 'Successfully removed series', detail:''});
+          this.getSeries();
+        } catch (e) {
+          this.messageService.add({severity:'error', summary: 'Something went wrong during update', detail:''});
+        }
+  }
+
   async onListChange(event: EventTarget, series: Series) {
     let value = (<HTMLInputElement>event).value;
     try {
       switch(value) {
         case "tobewatched": {
           this.messageService.add({severity:'info', summary: 'Adding series to Will Watch list', detail:''});
-          await this.userService.updateToBeWatched(this.userId, series);
+          await this.userService.updateToBeWatched(series);
           this.messageService.add({severity:'success', summary: 'Successfully added series to Will Watch list', detail:''});
           this.getSeries();
           break;
         }
         case "nowwatching": {
           this.messageService.add({severity:'info', summary: 'Adding series to Now Watching list', detail:''});
-          await this.userService.updateNowWatching(this.userId, series);
+          await this.userService.updateNowWatching(series);
           this.messageService.add({severity:'success', summary: 'Successfully added series to Now Watching list', detail:''});
           this.getSeries();
           break;

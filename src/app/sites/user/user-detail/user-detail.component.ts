@@ -59,7 +59,7 @@ export class UserDetailComponent implements OnInit {
     async updateGenres() {
       try {
         this.messageService.add({severity:'info', summary: 'Updating liked genres', detail:''});
-        await this.userService.updateUserGenres(this.user.id, this.userGenres);
+        await this.userService.updateUserGenres(this.userGenres);
         this.messageService.add({severity:'success', summary: 'Successfully updated liked genres', detail:''});
       } catch (e) {
           this.messageService.add({severity:'error', summary: 'Genre update was unsuccessful', detail:''});
@@ -72,7 +72,7 @@ export class UserDetailComponent implements OnInit {
           if(this.user.email === this.userNewEmail) {
             this.messageService.add({severity:'error', summary: 'E-mail address is the same as old one!', detail:''});
           } else {
-            await this.userService.updateEmail(this.user.id, this.userNewEmail);
+            await this.userService.updateEmail(this.userNewEmail);
             this.user.email = this.authService.loggedInUser.email;
             this.messageService.add({severity:'success', summary: 'E-mail address changed successfully', detail:''});
           }

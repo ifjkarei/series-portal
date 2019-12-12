@@ -25,6 +25,7 @@ export class NewSeriesComponent implements OnInit {
   imageUploading: boolean = false;
   seriesGenres: Genre[] = [];
   genreList: Genre[] = [];
+  form: any;
 
   constructor(private seriesService:SeriesService,
               private genreService: GenreService,
@@ -39,14 +40,27 @@ export class NewSeriesComponent implements OnInit {
     if(f.invalid) {
       return;
     }
-    this.seriesService.addNew(this.series, this.coverImg, this.seriesGenres);
+
+
+    try {
+      this.messageService.add({severity:'info', summary: 'Sending new series for approval', detail:''});
+      await this.seriesService.addNew(this.series, this.coverImg, this.seriesGenres);
+      this.messageService.add({severity:'success', summary: 'Successfully sent series for approval', detail:''});
+    } catch (e) {
+      this.messageService.add({severity:'error', summary: 'Something went wrong during sending', detail:''});
+    }
+    this.genreService.getGenres().subscribe(genres => this.genreList = genres);
+    this.seriesGenres = [];
+    this.series.release = 2010;
+    this.form.clear();
   }
 
-  uploadImage(event) {
+  uploadImage(event, form) {
     this.coverImg = event.files[0];
     this.messageService.add({ severity: 'success', summary: 'Cover has been uploaded', detail: 'You can add the series now'});
     console.log("Cover uploaded");
     this.imageUploading = true;
+    this.form = form;
   }
 
 }

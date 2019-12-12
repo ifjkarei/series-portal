@@ -15,13 +15,13 @@ export class SeriesService {
               ) { }
 
   addNew(series: Series, file: any, genreList: Genre[]): Promise<Series> {
-    console.log("Trying to add new series named: " + series.title);
+    console.log("Trying to save series named: " + series.title);
     const formData = new FormData();
     formData.append("series", JSON.stringify(series));
     formData.append("cover", file);
     formData.append("genres", JSON.stringify(genreList));
     return this.http.post<Series>(
-      `api/series/add`,
+      `api/series/save`,
       formData
     ).pipe(
       tap((series: Series) => {
@@ -29,6 +29,11 @@ export class SeriesService {
       })
     ).toPromise();
   }
+
+  getSeriesById(id: number): Promise<Series> {
+      console.log("Getting series by id " + id);
+      return this.http.get<Series>(`api/series/${id}`).toPromise();
+    }
 
   getSeries(): Observable<Series[]> {
     return this.http.get<Series[]>('api/series/list-approved');

@@ -1,9 +1,25 @@
-.carousel {
-  margin-left: 26%;
+/*@media only screen and (min-width: 640px) {
+  /deep/ .menu ul li:nth-last-child(1) {
+    position: absolute !important;
+    top:1px !important;
+    right:0 !important;
+    width: 100px;
+  }
+
+  /deep/ .menu ul li:nth-last-child(2) {
+    position: absolute !important;
+    top:1px !important;
+    right:100px !important;
+  }
+}*/
+
+div.container {
+    display: inline-block;
+    text-align: center;
 }
 
-/deep/ body .ui-widget-overlay {
-    background-color: transparent;
+.series-title {
+    display: block;
 }
 
 h3 {

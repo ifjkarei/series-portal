@@ -26,19 +26,19 @@ export class GenreService {
       formData).toPromise();
   }
 
+  getNonSeriesGenres(series: Series): Promise<Genre[]> {
+      const formData = new FormData();
+      formData.append('series', JSON.stringify(series));
+      return this.http.post<Genre[]>(
+        'api/genre/list-not-series',
+        formData).toPromise();
+    }
+
   getGenresByUser(user: User): Promise<Genre[]> {
     const formData = new FormData();
     formData.append('user', JSON.stringify(user));
     return this.http.post<Genre[]>(
       'api/genre/list-by-user',
       formData).toPromise();
-  }
-
-  getGenresBySeries(series: Series): Promise<Genre[]> {
-      const formData = new FormData();
-      formData.append('series', JSON.stringify(series));
-      return this.http.post<Genre[]>(
-        'api/genre/list-by-series',
-        formData).toPromise();
   }
 }

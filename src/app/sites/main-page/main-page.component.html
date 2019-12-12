@@ -5,16 +5,11 @@
     <h3>The Site where you can keep track of your series!</h3>
   </p-header>
   <ng-template let-series pTemplate="item">
-    <div class="series-details">
-      <div class="p-grid p-nogutter">
-        <div class="p-col-12">
-          <img class="carousel" [alt]="series.title + ' cover image'" style="height:200px" src="{{series.cover}}">
-        </div>
-        <div class="p-col-12" class="series-details" style="text-align: center">
+    <div class="container">
+      <a href="series/{{series.id}}"><img class="item" [alt]="series.title + ' cover image'" style="height:200px"
+                                          src="{{series.cover}}"></a>
           <div class="series-title">{{series.title}}</div>
         </div>
-      </div>
-    </div>
   </ng-template>
 </p-carousel>
 <p>Nowadays innumerable series exists all around the world, so no wonder one struggles to keep them organized and

@@ -19,13 +19,13 @@ export class UserService {
     private authService: AuthService
   ) {}
 
-  updateUserGenres(id: UUID, likedGenres: Genre[]): Promise<User> {
+  updateUserGenres(likedGenres: Genre[]): Promise<User> {
     console.log("Trying to update favourite genres for user named " +
       this.authService.loggedInUser.username);
     const formData = new FormData();
     formData.append("likedgenres", JSON.stringify(likedGenres));
     return this.http.post<User>(
-      `api/user/update/${id}/genres`,
+      `api/user/update/genres`,
       formData
     ).pipe(
       tap((user: User) => {
@@ -36,12 +36,12 @@ export class UserService {
     ).toPromise();
   }
 
-  updateEmail(id: UUID, email: string): Promise<User> {
+  updateEmail(email: string): Promise<User> {
     console.log("Trying to update e-mail address for user named " + this.authService.loggedInUser.username);
     const formData = new FormData();
     formData.append("email", email);
     return this.http.post<User>(
-      `api/user/update/${id}/email`,
+      `api/user/update/email`,
       formData
     ).pipe(
       tap((user: User) => {
@@ -72,12 +72,12 @@ export class UserService {
       return this.http.get<Series[]>(`api/user/${id}/watched`).toPromise();
   }
 
-  updateToBeWatched(id: UUID, series: Series): Promise<User> {
+  updateToBeWatched(series: Series): Promise<User> {
       console.log("Trying to update to be watched for user named " + this.authService.loggedInUser.username);
       const formData = new FormData();
       formData.append("tobewatched", JSON.stringify(series));
       return this.http.post<User>(
-        `api/user/update/${id}/tobewatched`,
+        `api/user/update/tobewatched`,
         formData
       ).pipe(
         tap((user: User) => {
@@ -88,12 +88,12 @@ export class UserService {
       ).toPromise();
   }
 
-  updateNowWatching(id: UUID, series: Series): Promise<User> {
+  updateNowWatching(series: Series): Promise<User> {
         console.log("Trying to update now watching for user named " + this.authService.loggedInUser.username);
         const formData = new FormData();
         formData.append("nowwatching", JSON.stringify(series));
         return this.http.post<User>(
-          `api/user/update/${id}/nowwatching`,
+          `api/user/update/nowwatching`,
           formData
         ).pipe(
           tap((user: User) => {
@@ -104,12 +104,12 @@ export class UserService {
         ).toPromise();
   }
 
-  updateWatched(id: UUID, series: Series): Promise<User> {
+  updateWatched(series: Series): Promise<User> {
         console.log("Trying to update watched for user named " + this.authService.loggedInUser.username);
         const formData = new FormData();
         formData.append("watched", JSON.stringify(series));
         return this.http.post<User>(
-          `api/user/update/${id}/watched`,
+          `api/user/update/watched`,
           formData
         ).pipe(
           tap((user: User) => {
@@ -118,6 +118,53 @@ export class UserService {
             this.authService.loggedInUser = user;
           })
         ).toPromise();
+  }
+
+  removeFromToBeWatched(series: Series): Promise<User> {
+        console.log("Trying to update to be watched for user named " + this.authService.loggedInUser.username);
+        const formData = new FormData();
+        formData.append("series", JSON.stringify(series));
+        return this.http.post<User>(
+          `api/user/remove/tobewatched`,
+          formData
+        ).pipe(
+          tap((user: User) => {
+            console.log("Successfully updated to be watched for user named " + this.authService.loggedInUser.username);
+            this.authService.isLoggedIn = true;
+            this.authService.loggedInUser = user;
+          })
+        ).toPromise();
+    }
+  removeFromNowWatching(series: Series): Promise<User> {
+        console.log("Trying to update now watching for user named " + this.authService.loggedInUser.username);
+        const formData = new FormData();
+        formData.append("series", JSON.stringify(series));
+        return this.http.post<User>(
+          `api/user/remove/nowwatching`,
+          formData
+        ).pipe(
+          tap((user: User) => {
+            console.log("Successfully updated now watching for user named " + this.authService.loggedInUser.username);
+            this.authService.isLoggedIn = true;
+            this.authService.loggedInUser = user;
+          })
+        ).toPromise();
+    }
+
+  removeFromWatched(series: Series): Promise<User> {
+      console.log("Trying to update watched for user named " + this.authService.loggedInUser.username);
+      const formData = new FormData();
+      formData.append("series", JSON.stringify(series));
+      return this.http.post<User>(
+        `api/user/remove/watched`,
+        formData
+      ).pipe(
+        tap((user: User) => {
+          console.log("Successfully updated watched for user named " + this.authService.loggedInUser.username);
+          this.authService.isLoggedIn = true;
+          this.authService.loggedInUser = user;
+        })
+      ).toPromise();
   }
 
   deleteUser(id: UUID) {

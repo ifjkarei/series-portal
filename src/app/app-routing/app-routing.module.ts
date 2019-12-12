@@ -4,6 +4,7 @@ import { MainPageComponent } from "../sites/main-page/main-page.component";
 import { LoginComponent } from '../sites/user/login/login.component';
 import { RegisterComponent } from '../sites/user/register/register.component';
 import { UserDetailComponent } from '../sites/user/user-detail/user-detail.component';
+import { SeriesDetailComponent } from '../sites/series/series-detail/series-detail.component';
 import { NewSeriesComponent } from '../sites/series/new-series/new-series.component';
 import { AllSeriesComponent } from '../sites/series/all-series/all-series.component';
 import { ToBeWatchedComponent } from '../sites/series/to-be-watched/to-be-watched.component';
@@ -13,7 +14,7 @@ import { RecommendedComponent } from '../sites/series/recommended/recommended.co
 import { ApproveComponent } from '../sites/series/approve/approve.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/main-page', pathMatch: 'full' },
+  { path: '', redirectTo: 'main-page', pathMatch: 'full' },
   { path: 'main-page', component: MainPageComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -24,7 +25,9 @@ const routes: Routes = [
   { path: 'nowwatching', component: NowWatchingComponent },
   { path: 'watched', component: WatchedComponent },
   { path: 'recommended', component: RecommendedComponent },
-  { path: 'approve', component: ApproveComponent }
+  { path: 'approve', component: ApproveComponent },
+  { path: 'series/:id', component: SeriesDetailComponent },
+  { path: '**', redirectTo: 'main-page', pathMatch: 'full'}
 ];
 
 @NgModule({

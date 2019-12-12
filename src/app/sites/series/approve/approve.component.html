@@ -1,6 +1,7 @@
 <p-toast [style]="{marginTop: '50px'}"></p-toast>
 <h2>Approve Series</h2>
-<p-dataView #dv [value]="series" [paginator]="true" [rows]="8" paginatorPosition="both">
+<p-dataView #dv [value]="series" [paginator]="true" [rows]="8" paginatorPosition="both"
+            emptyMessage="There are currently no series waiting to be approved">
   <p-header>
 
   </p-header>
@@ -18,7 +19,7 @@
           <div class="ui-g-12"><b>Release year:</b> {{series.release}}</div>
           <div class="ui-g-12"><b>Short Description:</b> {{series.desc}}</div>
           <div class="ui-g-12"><b>Long Description:</b> {{series.longDesc}}</div>
-          <div class="ui-g-12">
+          <div class="ui-grid-row">
             <button *ngIf="authService.isAdmin" pButton type="button" (click)="approveSeries($event, series);"
                     label="Approve"></button>
             <button *ngIf="authService.isAdmin" pButton type="button" (click)="deleteSeries($event, series);"
